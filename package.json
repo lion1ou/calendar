@@ -37,5 +37,21 @@
     "proseWrap": "preserve",
     "htmlWhitespaceSensitivity": "css",
     "endOfLine": "lf"
-  }
+  },
+  "description": "基于Vue 3 + Typescript + Vite实现的日历插件",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lion1ou/calendar.git"
+  },
+  "keywords": [
+    "calendar",
+    "日历"
+  ],
+  "author": "lion1ou",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lion1ou/calendar/issues"
+  },
+  "homepage": "https://github.com/lion1ou/calendar#readme"
 }
