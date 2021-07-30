@@ -11,7 +11,7 @@
       </div>
       <div class="last-update" @click="getWeather">{{ weatherData.daily.length ? `更新时间：${lastUpdate}` : '点击刷新' }}</div>
     </div>
-    <div class="current-time">{{ time }}</div>
+    <div class="current-time">{{ addZero(getYearMonthDay().hour) }}<span class="time-symbol">:</span>{{addZero(getYearMonthDay().minutes)}}</div>
     <div class="sidebar-info-group">
       <div class="sidebar-info">
         <div class="sidebar-info-main">{{ currentDate.lunar.gzYear }}年 农历{{ currentDate.lunar.IMonthCn }}{{ currentDate.lunar.IDayCn }}</div>
@@ -35,7 +35,6 @@ export default defineComponent({
         daily: [],
         last_update: ''
       },
-      time: `${this.addZero(getYearMonthDay().hour)}:${this.addZero(getYearMonthDay().minutes)}`,
       sI: null,
       lastUpdate: ''
     }
@@ -64,6 +63,9 @@ export default defineComponent({
     }
   },
   methods: {
+    getYearMonthDay(){
+      return getYearMonthDay()
+    },
     async getWeather() {
       // 'http://api.seniverse.com/v3/weather/daily.json?key=WWLXWJGTJL&location=hangzhou&language=zh-Hans&unit=c&start=0&days=1'
       try {
@@ -103,6 +105,20 @@ export default defineComponent({
   }
 })
 </script>
+<style lang="less">
+@keyframes identifier {
+    0%{
+      opacity: 1;
+    }
+    50%{
+      opacity: 0;
+    }
+    100%{
+      opacity: 1;
+    }
+  }
+  
+</style>
 <style lang="less" scoped>
 .calendar-sidebar {
   height: 600px;
@@ -143,6 +159,11 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
+  
+  .time-symbol {
+    animation: 2s infinite identifier;
+    margin-bottom: 8px;
+  }
 }
 .sidebar-info-group {
   height: 240px;

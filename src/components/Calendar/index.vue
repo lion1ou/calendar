@@ -3,7 +3,7 @@
     <div class="calendar-main" :style="{ width: openSidebar ? '600px' : '850px' }">
       <calendar-header :currentDate="currentDate" @change="monthOrYearChange" @back="backToday"></calendar-header>
       <calendar-content :currentDate="currentDate" @select="selectDay"></calendar-content>
-      <div class="sidebar-open" @click="openSidebar = !openSidebar">
+      <div class="sidebar-open" @click="changeSider">
         <img :src="arrowIcon" alt="" :style="{ transform: openSidebar ? 'rotate(180deg)' : '' }" />
       </div>
     </div>
@@ -18,6 +18,7 @@ import calendarSidebar from './calendar-sidebar.vue'
 import { getYearMonthDay } from './utils.ts'
 import { ref, defineComponent } from 'vue'
 import arrow from '../../assets/arrow.svg'
+import { calendarjs } from './calendar'
 export default defineComponent({
   name: 'Calendar',
   components: {
@@ -28,7 +29,7 @@ export default defineComponent({
   data() {
     return {
       currentDate: { year: 0, month: 0, day: 0, lunar: {} },
-      openSidebar: true,
+      openSidebar: localStorage.getItem('openSidebar')?JSON.parse(localStorage.getItem('openSidebar')).isShow : true,
       arrowIcon: arrow
     }
   },
@@ -50,12 +51,18 @@ export default defineComponent({
         let year = type === '+' ? this.currentDate.year + 1 : this.currentDate.year - 1
         this.currentDate.year = year
       }
+      const { year, month, day } = this.currentDate
+      this.currentDate.lunar = calendarjs.solar2lunar(year, month, day)
     },
     selectDay(data: Object) {
       this.currentDate = data
     },
     backToday() {
       this.currentDate = getYearMonthDay()
+    },
+    changeSider() {
+      this.openSidebar = !this.openSidebar
+      localStorage.setItem('openSidebar', JSON.stringify({ isShow: this.openSidebar }));
     }
   },
   created() {
