@@ -1,14 +1,6 @@
-var crypto = require('crypto')
-var querystring = require('querystring')
 const http = require('http')
-var URL = 'http://api.seniverse.com/v3/'
 
-function Api(uid, secretKey) {
-  this.uid = uid || 'U076256763'
-  this.secretKey = secretKey || 'WWLXWJGTJL'
-}
-
-function request(url, data) {
+const get = (url, data) => {
   let str = ''
   for (const key in data) {
     if (Object.hasOwnProperty.call(data, key)) {
@@ -29,7 +21,6 @@ function request(url, data) {
         error = new Error('无效的 content-type.\n' + `期望的是 application/json 但接收到的是 ${contentType}`)
       }
       if (error) {
-        console.error(error.message)
         // 消费响应的数据来释放内存。
         reject(error)
         return
@@ -52,39 +43,4 @@ function request(url, data) {
   })
 }
 
-Api.prototype.getSignatureParams = function () {
-  var params = {}
-  params.ts = Math.floor(new Date().getTime() / 1000) // 当前时间戳（秒）
-  params.ttl = 3000 // 过期时间
-  params.uid = this.uid // 用户ID
-
-  var str = querystring.encode(params) // 构造请求字符串
-  // 使用 HMAC-SHA1 方式，以 API 密钥（key）对上一步生成的参数字符串进行加密
-  params.sig = crypto.createHmac('sha1', this.secretKey).update(str).digest('base64') // 将加密结果用 base64 编码，并做一个 urlencode，得到签名 sig
-
-  return params
-}
-
-Api.prototype.getWeatherNow = function (location) {
-  var params = this.getSignatureParams()
-  params.location = location || 'hangzhou'
-
-  // 将构造的 URL 直接在后端 server 内调用
-  return request(URL + 'weather/now.json', {
-    ...params
-  })
-}
-
-Api.prototype.getWeatherDaily = function (location) {
-  var params = this.getSignatureParams()
-  params.location = location || 'hangzhou'
-
-  // 将构造的 URL 直接在后端 server 内调用
-  return request(URL + 'weather/daily.json', {
-    ...params
-  })
-}
-
-window.exports = {
-  request: new Api()
-}
+window.utoolsApi = { get }

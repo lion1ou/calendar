@@ -1,7 +1,7 @@
 <template>
   <div class="calendar-sidebar" :style="{ width: openSidebar ? '250px' : '0px' }">
     <weather></weather>
-    <div class="current-time">{{ addZero(getYearMonthDay().hour) }}<span class="time-symbol">:</span>{{addZero(getYearMonthDay().minutes)}}</div>
+    <div class="current-time">{{ addZero(getYearMonthDay().hour) }}<span class="time-symbol">:</span>{{ addZero(getYearMonthDay().minutes) }}</div>
     <div class="sidebar-info-group">
       <div class="sidebar-info">
         <div class="sidebar-info-main">{{ currentDate.lunar.gzYear }}年 农历{{ currentDate.lunar.IMonthCn }}{{ currentDate.lunar.IDayCn }}</div>
@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { getYearMonthDay } from './utils.ts'
+import { getYearMonthDay } from '../../utils/tools.ts'
 import { ref, defineComponent } from 'vue'
 import weather from '../Weather/index.vue'
 export default defineComponent({
@@ -57,10 +57,10 @@ export default defineComponent({
     }
   },
   methods: {
-    getYearMonthDay(){
+    getYearMonthDay() {
       return getYearMonthDay()
     },
-    
+
     getTime() {
       this.sI = setInterval(() => {
         let { hour, minutes } = getYearMonthDay()
@@ -82,17 +82,16 @@ export default defineComponent({
 </script>
 <style lang="less">
 @keyframes identifier {
-    0%{
-      opacity: 1;
-    }
-    50%{
-      opacity: 0;
-    }
-    100%{
-      opacity: 1;
-    }
+  0% {
+    opacity: 1;
   }
-  
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 </style>
 <style lang="less" scoped>
 .calendar-sidebar {
@@ -111,7 +110,7 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   .time-symbol {
     animation: 2s infinite identifier;
     margin-bottom: 8px;

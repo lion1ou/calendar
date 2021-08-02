@@ -20,17 +20,16 @@ export const getSignatureParams = () => {
 const getWeatherApi = async (url, params) => {
   const sig = await getSignatureParams()
   if (window.utoolsApi) {
-    const utoolsApi = new window.utoolsApi()
-    return await utoolsApi.request()
+    return await window.utoolsApi.get(url, { ...params, ...sig })
   } else {
     return await getJsonp({ url, data: { ...params, ...sig } })
   }
 }
 
-export const getWeatherDaily = async () => {
+export const getWeatherDaily = async (location = 'hangzhou') => {
   // 'http://api.seniverse.com/v3/weather/daily.json?key=WWLXWJGTJL&location=hangzhou&language=zh-Hans&unit=c&start=0&days=1'
   const params = {
-    location: 'hangzhou',
+    location,
     language: 'zh-Hans',
     unit: 'c',
     start: 0,

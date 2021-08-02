@@ -31,7 +31,8 @@
 
 <script lang="ts">
 import { ref, defineComponent } from 'vue'
-import { getYearMonthDay, holidayList, workdayList } from './utils.ts'
+import { getYearMonthDay } from '../../utils/tools.ts'
+import { holidayList, workdayList } from '../../utils/config.ts'
 export default defineComponent({
   name: 'CalendarContent',
   data() {

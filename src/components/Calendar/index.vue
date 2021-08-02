@@ -15,10 +15,9 @@
 import calendarHeader from './calendar-header.vue'
 import calendarContent from './calendar-content.vue'
 import calendarSidebar from './calendar-sidebar.vue'
-import { getYearMonthDay } from './utils.ts'
+import { getYearMonthDay, getLunar, getBaseInfo, setBaseInfo } from '../../utils/tools.ts'
 import { ref, defineComponent } from 'vue'
 import arrow from '../../assets/arrow.svg'
-import { calendarjs } from './calendar'
 export default defineComponent({
   name: 'Calendar',
   components: {
@@ -29,7 +28,7 @@ export default defineComponent({
   data() {
     return {
       currentDate: { year: 0, month: 0, day: 0, lunar: {} },
-      openSidebar: localStorage.getItem('openSidebar')?JSON.parse(localStorage.getItem('openSidebar')).isShow : true,
+      openSidebar: getBaseInfo().isShowSideBar || true,
       arrowIcon: arrow
     }
   },
@@ -52,7 +51,7 @@ export default defineComponent({
         this.currentDate.year = year
       }
       const { year, month, day } = this.currentDate
-      this.currentDate.lunar = calendarjs.solar2lunar(year, month, day)
+      this.currentDate.lunar = getLunar(year, month, day)
     },
     selectDay(data: Object) {
       this.currentDate = data
@@ -62,7 +61,7 @@ export default defineComponent({
     },
     changeSider() {
       this.openSidebar = !this.openSidebar
-      localStorage.setItem('openSidebar', JSON.stringify({ isShow: this.openSidebar }));
+      setBaseInfo({ isShowSideBar: this.openSidebar })
     }
   },
   created() {

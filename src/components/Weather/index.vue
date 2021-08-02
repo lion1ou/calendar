@@ -4,23 +4,35 @@
     <img class="weather-img" :src="`http://cdn.chuyunt.com/weather/white/${weatherData.daily.length ? weatherData.daily[0].code_day : '99'}@2x.png`" alt="" />
     <!-- 用于切换黑夜模式 -->
     <!-- <img class="weather-img" :src="`http://cdn.chuyunt.com/weather/black/${weatherData.daily[0].code_day}@2x.png`" alt="" /> -->
-    <div class="weather-info">{{ weatherData.daily.length ? weatherData.daily[0].text_day : '未知' }} {{ weatherData.daily.length ? `${weatherData.daily[0].wind_direction} 风` : '未知' }}</div>
-    <div class="weather-info">
-      {{ weatherData.daily.length ? weatherData.daily[0].low + ' - ' : '' }}
+    <div class="weather-info">{{ weatherData.daily.length ? weatherData.daily[0].text_day : '未知' }}</div>
+    <div class="weather-info-temp">
+      {{ weatherData.daily.length ? weatherData.daily[0].low + ' ~ ' : '' }}
       {{ weatherData.daily.length ? weatherData.daily[0].high : 0 }} ℃
     </div>
-    <div class="weather-info">
+    <div class="weather-info-location" @click="showCitySelect = !showCitySelect">
       {{ weatherData.location.name }}
+      <img :src="arrowIcon" alt="" :style="{ transform: showCitySelect ? 'rotate(90deg)' : 'rotate(270deg)' }" />
     </div>
-    <div class="last-update" @click="getWeatherDaily">{{ weatherData.daily.length ? `更新时间：${lastUpdate}` : '点击刷新' }}</div>
+    <div class="last-update" @click="getWeatherDaily">{{ weatherData.daily.length ? `来自心知天气，更新于：${lastUpdateFormate}` : '点击刷新' }}</div>
+    <div class="city-select" :style="{ height: showCitySelect ? '300px' : '0px' }">
+      <input class="city-item-input" type="text" v-model="filterText" placeholder="可搜索所在城市" />
+      <div class="city-item" v-for="(item, index) in filterCityList" :key="item.cityId + index" @click="selectCity(item)">{{ item.city }}</div>
+    </div>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { getWeatherDaily } from '../../utils/api'
+import { getYearMonthDay, getBaseInfo, setBaseInfo } from '../../utils/tools'
+import cityList from './cityList.json'
+import arrowIcon from '../../assets/arrow.svg'
 export default defineComponent({
   data() {
     return {
+      cityList,
+      arrowIcon,
+      filterText: '',
+      selectCityData: getBaseInfo().selectCityData || { cityId: 'WTMKQ069CCJ7', province: '浙江省/杭州市', city: '浙江/杭州/杭州', pinyin: 'Hangzhou' },
       weatherData: {
         location: {
           name: ''
@@ -28,15 +40,47 @@ export default defineComponent({
         daily: [],
         last_update: ''
       },
-      lastUpdate: ''
+      lastUpdate: '',
+      loading: false,
+      showCitySelect: false
+    }
+  },
+  computed: {
+    lastUpdateFormate() {
+      const obj = getYearMonthDay(this.lastUpdate)
+      return `${obj.hour}:${obj.minutes}`
+    },
+    filterCityList() {
+      const result = cityList.filter((item) => {
+        return (
+          item.city.split('/').includes(this.filterText) || item.city.split('/').some((i) => i.indexOf(this.filterText) === 0) || item.pinyin.toLowerCase().indexOf(this.filterText.toLowerCase()) === 0
+        )
+      })
+      console.log(result)
+      return result
     }
   },
   setup() {},
   methods: {
-    async getWeatherDaily() {
-      let res = await getWeatherDaily()
+    getYearMonthDay,
+    async getWeatherDaily(location: any) {
+      if (this.loading) {
+        return
+      }
+      this.loading = true
+      let res = await getWeatherDaily(location)
       this.weatherData = res.results[0]
       this.lastUpdate = res.results[0].last_update
+      let sT = setTimeout(() => {
+        this.loading = false
+        clearTimeout(sT)
+      }, 500)
+    },
+    selectCity(item: object) {
+      this.selectCityData = item
+      this.showCitySelect = false
+      this.getWeatherDaily(item.cityId)
+      setBaseInfo({ selectCityData: item })
     }
   },
   created() {
@@ -44,9 +88,8 @@ export default defineComponent({
       window.utools.onPluginEnter(() => {
         this.getWeatherDaily()
       })
-    } else {
-      this.getWeatherDaily()
     }
+    this.getWeatherDaily()
   }
 })
 </script>
@@ -67,11 +110,61 @@ export default defineComponent({
     font-weight: 100;
     font-size: 20px;
   }
+  .weather-info-temp {
+    font-weight: 100;
+    font-size: 14px;
+  }
+  .weather-info-location {
+    font-weight: 100;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      transition: all 0.5s;
+      width: 18px;
+      color: #ffffff;
+    }
+  }
   .last-update {
     font-size: 10px;
     margin-top: 8px;
     font-weight: 100;
     opacity: 0.5;
+    cursor: pointer;
+  }
+  .city-select {
+    position: absolute;
+    top: 255px;
+    left: 10px;
+    z-index: 100;
+    transition: all 0.5s;
+    max-height: 300px;
+    width: 210px;
+    overflow: auto;
+    background: #fff;
+    color: #333;
+    border-radius: 4px;
+    padding: 0 10px;
+    .city-item-input {
+      width: 210px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      height: 24px;
+      line-height: 18px;
+      font-size: 14px;
+      outline: none;
+      padding: 0 5px;
+      margin-top: 10px;
+      &::placeholder {
+        color: #ccc;
+      }
+    }
+    .city-item {
+      padding: 5px 0px;
+    }
   }
 }
 </style>
