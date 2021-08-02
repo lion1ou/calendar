@@ -1,5 +1,5 @@
 const config = {
-  uid: 'U076256763',
-  secretKey: 'WWLXWJGTJL'
+  XZ_UID: 'U076256763',
+  XZ_KEY: 'WWLXWJGTJL'
 }
 export default config

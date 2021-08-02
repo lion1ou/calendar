@@ -12,7 +12,7 @@
     <div class="weather-info">
       {{ weatherData.location.name }}
     </div>
-    <div class="last-update" @click="getWeather">{{ weatherData.daily.length ? `更新时间：${lastUpdate}` : '点击刷新' }}</div>
+    <div class="last-update" @click="getWeatherDaily">{{ weatherData.daily.length ? `更新时间：${lastUpdate}` : '点击刷新' }}</div>
   </div>
 </template>
 <script lang="ts">
@@ -28,7 +28,6 @@ export default defineComponent({
         daily: [],
         last_update: ''
       },
-      sI: null,
       lastUpdate: ''
     }
   },
@@ -41,12 +40,13 @@ export default defineComponent({
     }
   },
   created() {
-    window.utools &&
-      window.utools.onPluginEnter(({ code, type, payload, optional }) => {
-        console.log('用户进入插件', code, type, payload, optional)
+    if (window.utools) {
+      window.utools.onPluginEnter(() => {
         this.getWeatherDaily()
       })
-    this.getWeatherDaily()
+    } else {
+      this.getWeatherDaily()
+    }
   }
 })
 </script>
