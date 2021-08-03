@@ -140,7 +140,7 @@ export default defineComponent({
   }
   .city-select {
     position: absolute;
-    top: 255px;
+    top: 235px;
     left: 10px;
     z-index: 100;
     transition: all 0.5s;
@@ -152,6 +152,10 @@ export default defineComponent({
     color: #333;
     border-radius: 4px;
     padding: 0 10px;
+    box-shadow: 2px 2px 12px rgba(0, 0, 0, 0.3);
+    &::-webkit-scrollbar {
+      width: 0px;
+    }
     .city-search {
       padding: 10px 0;
       position: sticky;
