@@ -36,7 +36,6 @@ const get = (url, data) => {
           resolve(parsedData)
         } catch (e) {
           reject(e.message)
-          console.error(e.message)
         }
       })
     })

@@ -22,15 +22,7 @@ export default defineComponent({
   },
   data() {
     return {
-      weatherData: {
-        location: {
-          name: ''
-        },
-        daily: [],
-        last_update: ''
-      },
-      sI: null,
-      lastUpdate: ''
+      sI: null
     }
   },
   props: {
@@ -57,10 +49,7 @@ export default defineComponent({
     }
   },
   methods: {
-    getYearMonthDay() {
-      return getYearMonthDay()
-    },
-
+    getYearMonthDay,
     getTime() {
       this.sI = setInterval(() => {
         let { hour, minutes } = getYearMonthDay()

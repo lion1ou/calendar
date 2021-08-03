@@ -9,13 +9,15 @@
       {{ weatherData.daily.length ? weatherData.daily[0].low + ' ~ ' : '' }}
       {{ weatherData.daily.length ? weatherData.daily[0].high : 0 }} ℃
     </div>
-    <div class="weather-info-location" @click="showCitySelect = !showCitySelect">
+    <div class="weather-info-location" @click="showCitySelect = !showCitySelect" v-if="weatherData.location.name">
       {{ weatherData.location.name }}
       <img :src="arrowIcon" alt="" :style="{ transform: showCitySelect ? 'rotate(90deg)' : 'rotate(270deg)' }" />
     </div>
     <div class="last-update" @click="getWeatherDaily">{{ weatherData.daily.length ? `来自心知天气，更新于：${lastUpdateFormate}` : '点击刷新' }}</div>
     <div class="city-select" :style="{ height: showCitySelect ? '300px' : '0px' }">
-      <input class="city-item-input" type="text" v-model="filterText" placeholder="可搜索所在城市" />
+      <div class="city-search">
+        <input class="city-search-input" type="text" v-model="filterText" placeholder="可搜索所在城市" />
+      </div>
       <div class="city-item" v-for="(item, index) in filterCityList" :key="item.cityId + index" @click="selectCity(item)">{{ item.city }}</div>
     </div>
   </div>
@@ -32,7 +34,7 @@ export default defineComponent({
       cityList,
       arrowIcon,
       filterText: '',
-      selectCityData: getBaseInfo().selectCityData || { cityId: 'WTMKQ069CCJ7', province: '浙江省/杭州市', city: '浙江/杭州/杭州', pinyin: 'Hangzhou' },
+      selectCityData: { cityId: 'WTMKQ069CCJ7', province: '浙江省/杭州市', city: '浙江/杭州/杭州', pinyin: 'Hangzhou' },
       weatherData: {
         location: {
           name: ''
@@ -56,7 +58,6 @@ export default defineComponent({
           item.city.split('/').includes(this.filterText) || item.city.split('/').some((i) => i.indexOf(this.filterText) === 0) || item.pinyin.toLowerCase().indexOf(this.filterText.toLowerCase()) === 0
         )
       })
-      console.log(result)
       return result
     }
   },
@@ -84,12 +85,15 @@ export default defineComponent({
     }
   },
   created() {
+    if (getBaseInfo().selectCityData && Object.keys(getBaseInfo().selectCityData).length) {
+      this.selectCityData = getBaseInfo().selectCityData
+    }
     if (window.utools) {
       window.utools.onPluginEnter(() => {
-        this.getWeatherDaily()
+        this.getWeatherDaily(this.selectCityData.cityId)
       })
     }
-    this.getWeatherDaily()
+    this.getWeatherDaily(this.selectCityData.cityId)
   }
 })
 </script>
@@ -142,12 +146,18 @@ export default defineComponent({
     transition: all 0.5s;
     max-height: 300px;
     width: 210px;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     background: #fff;
     color: #333;
     border-radius: 4px;
     padding: 0 10px;
-    .city-item-input {
+    .city-search {
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+    }
+    .city-search-input {
       width: 210px;
       box-sizing: border-box;
       border: 1px solid #ccc;
@@ -157,7 +167,6 @@ export default defineComponent({
       font-size: 14px;
       outline: none;
       padding: 0 5px;
-      margin-top: 10px;
       &::placeholder {
         color: #ccc;
       }

@@ -6,6 +6,7 @@ export default defineConfig({
   base: './',
   plugins: [vue()],
   server: {
-    open: true
+    open: true,
+    host: '127.0.0.1'
   }
 })

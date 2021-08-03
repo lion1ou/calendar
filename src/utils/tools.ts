@@ -27,14 +27,12 @@ export const getLunar = (year: number | string, month: number | string, day: num
 export const getBaseInfo = () => {
   const originStore = localStorage.getItem(STORAGE_KEY+'-baseInfo')
   const result = originStore ? JSON.parse(originStore) : {}
-  console.log(result)
   return result
 }
 
 export const setBaseInfo = (params: object) => {
   const originStore = getBaseInfo()
   const data = {...originStore, ...params}
-  console.log(data)
   localStorage.setItem(STORAGE_KEY+'-baseInfo', JSON.stringify(data))
 }
 

@@ -78,7 +78,6 @@ export default defineComponent({
         }
         result[Math.floor(i / 7)].push({ year, month, day, week, isHoliday, isWorkDay, isWeekend, isCurrentMonth, isToday, lunar, isSelected, isFestival })
       }
-      // console.log(result)
       return result
     }
   },
@@ -129,6 +128,7 @@ export default defineComponent({
     align-items: center;
     box-sizing: border-box;
     font-size: 20px;
+    cursor: pointer;
     .day-lunar {
       font-size: 10px;
     }

@@ -74,7 +74,7 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: default;
+  cursor: pointer;
 }
 .icon-btn-unit {
   height: 22px;
@@ -86,7 +86,7 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   font-size: 12px;
-  cursor: default;
+  cursor: pointer;
 }
 .icon-color {
   background: var(--main-color);

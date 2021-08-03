@@ -17,7 +17,7 @@ import calendarContent from './calendar-content.vue'
 import calendarSidebar from './calendar-sidebar.vue'
 import { getYearMonthDay, getLunar, getBaseInfo, setBaseInfo } from '../../utils/tools.ts'
 import { ref, defineComponent } from 'vue'
-import arrow from '../../assets/arrow.svg'
+import arrowIcon from '../../assets/arrow.svg'
 export default defineComponent({
   name: 'Calendar',
   components: {
@@ -28,8 +28,8 @@ export default defineComponent({
   data() {
     return {
       currentDate: { year: 0, month: 0, day: 0, lunar: {} },
-      openSidebar: getBaseInfo().isShowSideBar || true,
-      arrowIcon: arrow
+      openSidebar: true,
+      arrowIcon
     }
   },
   props: {},
@@ -65,6 +65,10 @@ export default defineComponent({
     }
   },
   created() {
+    console.log(getBaseInfo().isShowSideBar)
+    if (getBaseInfo().isShowSideBar !== undefined) {
+      this.openSidebar = getBaseInfo().isShowSideBar
+    }
     this.currentDate = getYearMonthDay()
   }
 })
