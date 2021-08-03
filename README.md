@@ -2,4 +2,4 @@
 
 > 基于 Vue 3 + Typescript + Vite
 
-![utools-calendar]('./public/calendar-detail.png')
+![utools-calendar](./public/calendar-detail.png)
