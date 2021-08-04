@@ -36,6 +36,7 @@ export const setBaseInfo = (params: object) => {
   localStorage.setItem(STORAGE_KEY+'-baseInfo', JSON.stringify(data))
 }
 
+export const isUtools = window.navigator.userAgent.toLowerCase().indexOf('utools') !== -1
 
 
 export const getJsonp = (options: object) => {

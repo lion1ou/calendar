@@ -1,4 +1,4 @@
-import { getJsonp } from './tools'
+import { getJsonp, isUtools } from './tools'
 import config from './config'
 import CryptoJS from 'crypto-js'
 
@@ -17,9 +17,9 @@ export const getSignatureParams = () => {
   return { ts, uid, sig }
 }
 
-const getWeatherApi = async (url, params) => {
+const getWeatherApi = async (url: string, params: object) => {
   const sig = await getSignatureParams()
-  if (window.utoolsApi) {
+  if (isUtools) {
     return await window.utoolsApi.get(url, { ...params, ...sig })
   } else {
     return await getJsonp({ url, data: { ...params, ...sig } })

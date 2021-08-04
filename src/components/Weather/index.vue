@@ -13,7 +13,7 @@
       {{ weatherData.location.name }}
       <img :src="arrowIcon" alt="" :style="{ transform: showCitySelect ? 'rotate(90deg)' : 'rotate(270deg)' }" />
     </div>
-    <div class="last-update" @click="getWeatherDaily">{{ weatherData.daily.length ? `来自心知天气，更新于：${lastUpdateFormate}` : '点击刷新' }}</div>
+    <div class="last-update" @click="reloadView">{{ weatherData.daily.length ? `来自心知天气，更新于：${lastUpdateFormate}` : loading ? '请求中...' : '请求失败，点击刷新' }}</div>
     <div class="city-select" :style="{ height: showCitySelect ? '300px' : '0px' }">
       <div class="city-search">
         <input class="city-search-input" type="text" v-model="filterText" placeholder="可搜索所在城市" />
@@ -63,19 +63,29 @@ export default defineComponent({
   },
   setup() {},
   methods: {
+    reloadView(){
+      window.location.reload()
+      console.log('重新请求...')
+      this.getWeatherDaily(this.selectCityData.cityId)
+    },
     getYearMonthDay,
     async getWeatherDaily(location: any) {
       if (this.loading) {
         return
       }
       this.loading = true
-      let res = await getWeatherDaily(location)
+      let res: any = {}
+      try {
+       res = await getWeatherDaily(location)  
+      } catch (error) {
+        this.loading = false
+      }
       this.weatherData = res.results[0]
       this.lastUpdate = res.results[0].last_update
       let sT = setTimeout(() => {
         this.loading = false
         clearTimeout(sT)
-      }, 500)
+      }, 200)
     },
     selectCity(item: object) {
       this.selectCityData = item
