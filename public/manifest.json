@@ -1,0 +1,26 @@
+{
+  "name": "初韵日历",
+  "short_name": "初韵日历",
+  "theme_color": "#fff",
+  "background_color": "#fff",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "index.html",
+  "icons": [
+    {
+      "src": "calendar.png",
+      "type": "image/png",
+      "sizes": "72x72"
+    },
+    {
+      "src": "calendar.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "calendar.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    }
+  ]
+}

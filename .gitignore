@@ -1,0 +1,11 @@
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
+.env
+.env.local
+.env.*.local
+# 部署脚本仅本地使用，勿提交
+publish.sh
+build.sh

@@ -1,0 +1,22 @@
+{
+  "pluginName": "初韵日历",
+  "description": "一个简单、好用、美观的日历插件，保留日历最初的韵味",
+  "main": "index.html",
+  "preload": "preload.js",
+  "version": "1.0.0",
+  "author": "lion1ou",
+  "logo": "calendar.png",
+  "homepage": "https://toy.lion1ou.tech/calendar/#/",
+  "pluginSetting": {
+    "width": 1000,
+    "height": 667
+  },
+  "features": [
+    {
+      "code": "rili",
+      "explain": "打开日历",
+      "cmds": ["日历", "rili", "calendar", "rl", "chuyun", "初韵", "初韵日历"],
+      "icon": "calendar.png"
+    }
+  ]
+}
