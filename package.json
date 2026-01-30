@@ -15,7 +15,6 @@
     "format:fix": "prettier --write \"src/**/*.{js,jsx,ts,tsx,vue,json,css,less,scss}\" && eslint --fix \"src/**/*.{js,jsx,ts,tsx,vue}\""
   },
   "dependencies": {
-    "@swc/helpers": "0.5.17",
     "axios": "^0.27.2",
     "crypto-js": "^4.1.1",
     "dayjs": "^1.11.5",
