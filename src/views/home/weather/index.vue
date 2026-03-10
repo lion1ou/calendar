@@ -59,7 +59,7 @@ export default defineComponent({
     const loadingTip = ref('');
     const weatherDetails = ref(emptyData);
     const store = getStorage('current-city')
-    const curCityStore = store.adCode ? store : DEFAULT_CITY;
+    const curCityStore = store?.adCode ? store : DEFAULT_CITY;
 
     console.log('curCityStore', curCityStore);
     const curCity = ref(curCityStore);

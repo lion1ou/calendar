@@ -15,7 +15,7 @@
     {
       "code": "rili",
       "explain": "打开日历",
-      "cmds": ["日历", "rili", "calendar", "rl", "chuyun", "初韵", "初韵日历"],
+      "cmds": ["日历", "rili", "calendar", "chuyun", "初韵日历"],
       "icon": "calendar.png"
     }
   ]
