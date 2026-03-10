@@ -10,6 +10,12 @@ export default defineConfig({
     open: false,
     host: '127.0.0.1',
     port: 9091,
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:5555',
+        changeOrigin: true,
+      },
+    },
   },
   resolve: {
     alias: {

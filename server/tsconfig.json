@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "outDir": "../server-dist",
+    "rootDir": "..",
+    "sourceMap": true,
+    "declaration": false,
+    "skipLibCheck": true,
+    "baseUrl": "..",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": [
+    "./**/*.ts",
+    "../src/constant/WeatherImageCode.ts",
+    "../src/constant/CityAdCode2020.ts"
+  ],
+  "exclude": ["node_modules"]
+}

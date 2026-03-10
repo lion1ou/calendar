@@ -83,6 +83,10 @@ export default defineComponent({
       } else if (unit === 'day') {
         day = type === '+' ? oDay + 1 : oDay - 1;
       }
+      if (unit === 'month' || unit === 'year') {
+        const maxDay = new Date(year, month, 0).getDate();
+        day = Math.min(day, maxDay);
+      }
       currentDate.value = getDateInfo([year, month, day]);
     };
     const selectDay = (data: any) => {
