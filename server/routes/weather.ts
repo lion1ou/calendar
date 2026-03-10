@@ -3,10 +3,10 @@ import { fetchNowWeather, getCityInfo } from '../services/weather';
 
 const router = Router();
 
-router.get('/weather', async (req: Request, res: Response) => {
-  const city = req.query.city as string;
+router.post('/weather', async (req: Request, res: Response) => {
+  const { city } = req.body || {};
 
-  if (!city) {
+  if (!city || typeof city !== 'string') {
     return res.json({ code: -1, message: '缺少参数 city' });
   }
 

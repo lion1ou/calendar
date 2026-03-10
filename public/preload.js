@@ -1,15 +1,12 @@
 const http = require('http');
 const https = require('https');
 
-const API_BASE_URL = 'http://127.0.0.1:5555';
-
 function httpGet(url) {
-  const fullUrl = url.startsWith('/api') ? API_BASE_URL + url : url;
-  const client = fullUrl.startsWith('https') ? https : http;
+  const client = url.startsWith('https') ? https : http;
 
   return new Promise(function (resolve, reject) {
     client
-      .get(fullUrl, function (res) {
+      .get(url, function (res) {
         let rawData = '';
         res.setEncoding('utf8');
         res.on('data', function (chunk) {
@@ -28,8 +25,7 @@ function httpGet(url) {
 }
 
 function httpPost(url, data) {
-  const fullUrl = url.startsWith('/api') ? API_BASE_URL + url : url;
-  const urlObj = new URL(fullUrl);
+  const urlObj = new URL(url);
   const client = urlObj.protocol === 'https:' ? https : http;
   const postData = JSON.stringify(data);
 

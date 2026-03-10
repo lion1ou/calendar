@@ -1,14 +1,27 @@
 import axios from 'axios';
 import { isUtools } from '@/utils';
 
+const ONLINE_SERVER = 'https://toy.lion1ou.tech';
+
 export default class Request {
+  /**
+   * utools: /cApi/xxx → https://toy.lion1ou.tech/cApi/xxx（绝对路径，经 preload.js 绕过 CORS）
+   * 浏览器: /cApi/xxx → 保持相对路径（由 vite proxy 或 nginx 处理）
+   */
+  private static resolveUrl(url: string): string {
+    if (isUtools) {
+      return ONLINE_SERVER + url;
+    }
+    return url;
+  }
+
   private static async utoolsReq(method: 'post' | 'get', url: string, params: any) {
-    const res = await window.utoolsApi[method](url, params);
+    const res = await window.utoolsApi[method](this.resolveUrl(url), params);
     return res.data;
   }
 
   private static async axiosReq(method: 'post' | 'get', url: string, params: any) {
-    const res = await axios({ method, url, data: params });
+    const res = await axios({ method, url: this.resolveUrl(url), data: params });
     return res.data;
   }
 

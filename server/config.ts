@@ -4,7 +4,7 @@ import path from 'path';
 dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
 
 export const config = {
-  port: parseInt(process.env.SERVER_PORT || '5555', 10),
+  port: 5555,
   nodeEnv: process.env.NODE_ENV || 'development',
 
   gdWeatherKey: process.env.GD_WEATHER_KEY || '',
@@ -13,10 +13,15 @@ export const config = {
   xzWeatherSecret: process.env.XZ_WEATHER_SECRET || '',
 };
 
-const requiredKeys = ['gdWeatherKey', 'hfWeatherKey', 'xzWeatherKey', 'xzWeatherSecret'] as const;
+const weatherKeys = ['gdWeatherKey', 'hfWeatherKey', 'xzWeatherKey'] as const;
+const hasAnyKey = weatherKeys.some((key) => !!config[key]);
 
-for (const key of requiredKeys) {
-  if (!config[key]) {
-    console.warn(`[config] 警告: ${key} 未配置，相关天气服务将不可用`);
+if (!hasAnyKey) {
+  console.warn('[config] 警告: 未配置任何天气 API 密钥，天气服务将不可用');
+} else {
+  for (const key of weatherKeys) {
+    if (!config[key]) {
+      console.warn(`[config] 提示: ${key} 未配置`);
+    }
   }
 }

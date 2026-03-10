@@ -58,7 +58,8 @@ export default defineComponent({
     const Store = useStore();
     const loadingTip = ref('');
     const weatherDetails = ref(emptyData);
-    const curCityStore = getStorage('current-city') || DEFAULT_CITY;
+    const store = getStorage('current-city')
+    const curCityStore = store.adCode ? store : DEFAULT_CITY;
 
     console.log('curCityStore', curCityStore);
     const curCity = ref(curCityStore);
@@ -72,6 +73,7 @@ export default defineComponent({
     });
 
     const getNowWeatherFn = async (location: string) => {
+      console.log('getNowWeatherFn', location);
       loadingTip.value = 'loading...';
       const res = await fetchNowWeather(location);
       loadingTip.value = '';

@@ -1,6 +1,4 @@
-import { apiKeyMap, USER_CONFIG } from '@/config';
-
-const { STORAGE_KEY } = apiKeyMap;
+import { STORAGE_KEY, USER_CONFIG } from '@/config';
 
 export const getBaseInfo = (param?: string) => {
   const storage = window.utools ? window.utools.dbStorage : window.localStorage;

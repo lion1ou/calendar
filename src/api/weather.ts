@@ -22,11 +22,12 @@ export const fetchNowWeather = async (city: string): Promise<WeatherInfo | null>
   }
 
   try {
-    const data = await Request.get(`/api/weather?city=${encodeURIComponent(city)}`, {});
+    const data = await Request.post('/cApi/weather', { city });
+
     if (data.code === 0 && data.data) {
       return data.data as WeatherInfo;
     }
-    console.error('[weather] proxy response error:', data.message);
+    console.error('[weather] proxy response error:', data);
     return null;
   } catch (error) {
     console.error('[weather] proxy request failed:', error);

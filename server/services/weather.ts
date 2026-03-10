@@ -3,7 +3,10 @@ import dayjs from 'dayjs';
 import axios from 'axios';
 import { config } from '../config';
 import weatherImageCode from '../../src/constant/WeatherImageCode';
-import cityList from '../../src/constant/CityAdCode2020';
+import cityListPart1 from '../../src/constant/CityAdCode2020_part1';
+import cityListPart2 from '../../src/constant/CityAdCode2020_part2';
+
+const cityList = [...cityListPart1, ...cityListPart2];
 
 export type WeatherInfo = {
   province: string;

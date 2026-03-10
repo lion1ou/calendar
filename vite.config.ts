@@ -11,15 +11,26 @@ export default defineConfig({
     host: '127.0.0.1',
     port: 9091,
     proxy: {
-      '/api': {
+      '/cApi': {
         target: 'http://127.0.0.1:5555',
         changeOrigin: true,
+        rewrite: (p) => p.replace(/^\/cApi/, ''),
       },
     },
   },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
+    },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'naive-ui': ['naive-ui'],
+          'vue-vendor': ['vue', 'vue-router', 'vuex'],
+        },
+      },
     },
   },
 });

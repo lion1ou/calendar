@@ -37,7 +37,6 @@
 </template>
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from 'vue';
-import cityList from '../../../constant/CityAdCode2020';
 
 export default defineComponent({
   props: {
@@ -49,13 +48,27 @@ export default defineComponent({
   setup(props, content) {
     const showCitySelect = ref(false);
     const filterText = ref('');
-    const allCityList = ref(cityList);
+    const allCityList = ref<any[]>([]);
+    let cityDataLoaded = false;
+
+    const loadCityData = async () => {
+      if (cityDataLoaded) return;
+      const [p1, p2] = await Promise.all([
+        import('../../../constant/CityAdCode2020_part1'),
+        import('../../../constant/CityAdCode2020_part2'),
+      ]);
+      allCityList.value = [...p1.default, ...p2.default];
+      cityDataLoaded = true;
+    };
 
     const citySelectorPosition = ref(null);
 
     const toggleCitySelect = (_event: any) => {
       citySelectorPosition.value = _event.target.offsetTop + _event.target.offsetHeight;
       showCitySelect.value = !showCitySelect.value;
+      if (showCitySelect.value) {
+        loadCityData();
+      }
     };
 
     watch(showCitySelect, () => {

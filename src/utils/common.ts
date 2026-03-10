@@ -1,6 +1,4 @@
-import { apiKeyMap } from '@/config';
-
-const { STORAGE_KEY } = apiKeyMap;
+import { STORAGE_KEY } from '@/config';
 
 export const isArr = (data: any) => Object.prototype.toString.call(data) === '[object Array]';
 export const isObj = (data: any) => Object.prototype.toString.call(data) === '[object Object]';
